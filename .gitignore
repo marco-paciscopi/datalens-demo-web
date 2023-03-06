@@ -1,0 +1,6 @@
+venv/
+.python-version
+.streamlit/
+
+*secrets.toml
+*.pdf
