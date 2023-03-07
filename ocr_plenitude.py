@@ -48,16 +48,11 @@ if my_upload is not None:
 
 def call_api(file, api, api_key):
 
-    # Encode the file in binary
-    # binary_pdf = file.getvalue().encode('utf-8')
-    # with open('test.pdf', "rb") as f:
-    #     file_content = f.read()
-   
-
-    # Create a dictionary with the file     
-    #data = {'file': binary_pdf}
-    data = {'file': file}
-
+    file.seek(0)
+    file_content = file.read()
+    
+    # Create a dictionary with the file        
+    data = {'file': file_content}
 
     # Call the api with the file and the api key
     r = requests.post(api, files=data, params={'key': api_key}, headers={'Content-Type': 'application/pdf',
@@ -77,7 +72,7 @@ call_api_button = st.sidebar.button("Call the API")
 
 # Call the api when the button is clicked
 if call_api_button:
-    response = call_api(file=my_upload.read(), api=api_url, api_key=api_key)
+    response = call_api(file=my_upload, api=api_url, api_key=api_key)
 
     # Display the response in a form with streamlit function st.form
     # The form displays the response in text fields. 
