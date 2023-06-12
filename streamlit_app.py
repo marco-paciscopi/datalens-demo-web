@@ -61,7 +61,6 @@ if call_api_button:
     )
 
     col2.write("## Response")
-    col2.write(f"Response time: {response.elapsed.total_seconds()}s")
     try:
         data = response.json()
 
@@ -71,9 +70,11 @@ if call_api_button:
             col2.write(data[f_name])
 
         # Print raw json response
-        col2.write(f"### Raw content (status {response.status_code}):")
+        col2.write(f"### Raw response content (status {response.status_code}):")
+        col2.write(f"Response time: {response.elapsed.total_seconds()}s")
         col2.json(data, expanded=True)
     except Exception:
         # Print raw json response
-        col2.write(f"### Raw content (status {response.status_code}):")
+        col2.write(f"### Raw response content (status {response.status_code}):")
+        col2.write(f"Response time: {response.elapsed.total_seconds()}s")
         col2.write(response.text)
