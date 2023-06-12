@@ -4,7 +4,19 @@ from utils import images_to_display, call_api
 # Load streamlit secrets. The secrets are stored in the .streamlit/secrets.toml file.
 # To add a new variable, add it in the secrets.toml file and restart the streamlit server.
 api_key = st.secrets["API_KEY"]
-apis = {"id": st.secrets["API_URL_ID"], "invoices": st.secrets["API_URL_INVOICES"]}
+apis = {
+    "id": {"url": st.secrets["API_URL_ID"], "fields": {}},
+    "invoices": {
+        "url": st.secrets["API_URL_INVOICES"],
+        "fields": {
+            "vendor": "Fornitore :sunrise:",
+            "name": "Name :bust_in_silhouette:",
+            "surname": "Surname :bust_in_silhouette:",
+            "email": "Email :e-mail:",
+            "telephone": "Indirizzo :house_buildings:",
+        },
+    },
+}
 
 st.set_page_config(layout="wide", page_title="Check OCR solutions")
 
@@ -16,6 +28,7 @@ col1, col2 = st.columns(2)
 
 # Select which API to use
 selected_api = st.sidebar.radio("Select API:", apis.keys())
+selected_config = apis[selected_api]
 
 # Upload the file to send with the request
 file_upload = st.sidebar.file_uploader("Choose a file:", type=["pdf", "jpeg", "jpg"])
@@ -25,8 +38,8 @@ if file_upload is not None:
     file_extension = file_upload.name.split(".")[-1].lower()
     file_bytes = file_upload.getvalue()
 
-    st.write("## Uploaded document")
-    st.write(f"Document type: {file_extension}")
+    col1.write("## Uploaded document")
+    col1.write(f"Document type: {file_extension}")
 
     # Display images
     for image_bytes in images_to_display(
@@ -43,15 +56,24 @@ if call_api_button:
     response = call_api(
         file_bytes=file_upload,
         file_extension=file_extension,
-        url=apis[selected_api],
+        url=selected_config["url"],
         api_key=api_key,
     )
 
-    st.write("## Response")
-    st.write(f"Response time: {response.elapsed.total_seconds()}s")
-    st.write(f"Response content (status {response.status_code}):")
+    col1.write("## Response")
+    col1.write(f"Response time: {response.elapsed.total_seconds()}s")
     try:
         data = response.json()
-        st.json(data, expanded=True)
+
+        # Pretty print response
+        for f_name, f_desc in selected_config["fields"].items():
+            col2.write(f"#### {f_desc}")
+            col2.write(data[f_name])
+
+        # Print raw json response
+        col2.write(f"### Raw content (status {response.status_code}):")
+        col2.json(data, expanded=True)
     except Exception:
-        st.write(response.text)
+        # Print raw json response
+        col2.write(f"### Raw content (status {response.status_code}):")
+        col2.write(response.text)
