@@ -13,7 +13,7 @@ apis = {
             "name": "Name :bust_in_silhouette:",
             "surname": "Surname :bust_in_silhouette:",
             "email": "Email :e-mail:",
-            "telephone": "Indirizzo :house_buildings:",
+            "meter_address": "Indirizzo :house_buildings:",
         },
     },
 }
