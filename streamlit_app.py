@@ -45,7 +45,7 @@ if file_upload is not None:
     for image_bytes in images_to_display(
         file_extension=file_extension, file_bytes=file_bytes
     ):
-        st.image(image_bytes, clamp=False, channels="RGB", output_format="auto")
+        col1.image(image_bytes, clamp=False, channels="RGB", output_format="auto")
 
 
 # Add a button to call the api
@@ -60,8 +60,8 @@ if call_api_button:
         api_key=api_key,
     )
 
-    col1.write("## Response")
-    col1.write(f"Response time: {response.elapsed.total_seconds()}s")
+    col2.write("## Response")
+    col2.write(f"Response time: {response.elapsed.total_seconds()}s")
     try:
         data = response.json()
 
