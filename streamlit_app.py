@@ -5,10 +5,10 @@ from utils import images_to_display, call_api
 # To add a new variable, add it in the secrets.toml file and restart the streamlit server.
 api_key = st.secrets["API_KEY"]
 apis = {
-    "id": {"url": st.secrets["API_URL_ID"], "fields": {}},
+    "id": {"url": st.secrets["API_URL_ID"], "response_fields": {}},
     "invoices": {
         "url": st.secrets["API_URL_INVOICES"],
-        "fields": {
+        "response_fields": {
             "vendor": "Fornitore :sunrise:",
             "name": "Name :bust_in_silhouette:",
             "surname": "Surname :bust_in_silhouette:",
@@ -17,6 +17,8 @@ apis = {
         },
     },
 }
+
+invoice_commodity = ["dual", "luce", "gas"]
 
 st.set_page_config(layout="wide", page_title="Check OCR solutions")
 
@@ -29,6 +31,11 @@ col1, col2 = st.columns(2)
 # Select which API to use
 selected_api = st.sidebar.radio("Select API:", apis.keys())
 selected_config = apis[selected_api]
+
+# If invoices add params
+params = {}
+if selected_api == "invoices":
+    params = st.sidebar.radio("Select commodity type:", invoice_commodity)
 
 # Upload the file to send with the request
 file_upload = st.sidebar.file_uploader("Choose a file:", type=["pdf", "jpeg", "jpg"])
@@ -58,6 +65,7 @@ if call_api_button:
         file_extension=file_extension,
         url=selected_config["url"],
         api_key=api_key,
+        params=params
     )
 
     col2.write("## Response")
@@ -65,7 +73,7 @@ if call_api_button:
         data = response.json()
 
         # Pretty print response
-        for f_name, f_desc in selected_config["fields"].items():
+        for f_name, f_desc in selected_config["response_fields"].items():
             col2.write(f"#### {f_desc}")
             col2.write(data[f_name])
 

@@ -29,7 +29,7 @@ def images_to_display(file_extension: str, file_bytes: bytes) -> list[bytes]:
 
 
 def call_api(
-    file_bytes: bytes, file_extension: str, url: str, api_key: str
+    file_bytes: bytes, file_extension: str, url: str, api_key: str, params: dict = str
 ) -> requests.Response:
     match file_extension:
         case "pdf":
@@ -50,6 +50,7 @@ def call_api(
             "User-Agent": "python-requests/2.25.1",
             "Host": "real-time-ocr-gateway-3bcpgr34.ew.gateway.dev",
         },
+        params=params
     )
 
     return r
