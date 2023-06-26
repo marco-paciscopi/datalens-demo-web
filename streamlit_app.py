@@ -35,7 +35,8 @@ selected_config = apis[selected_api]
 # If invoices add params
 params = {}
 if selected_api == "invoices":
-    params = st.sidebar.radio("Select commodity type:", invoice_commodity)
+    commodity = st.sidebar.radio("Select commodity type:", invoice_commodity)
+    params = {"commodity": commodity}
 
 # Upload the file to send with the request
 file_upload = st.sidebar.file_uploader("Choose a file:", type=["pdf", "jpeg", "jpg"])
