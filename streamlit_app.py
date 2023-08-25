@@ -1,5 +1,5 @@
 import streamlit as st
-from utils import images_to_display, call_api
+from utils import images_to_display, call_api, call_authorization, read_image
 
 # Load streamlit secrets. The secrets are stored in the .streamlit/secrets.toml file.
 # To add a new variable, add it in the secrets.toml file and restart the streamlit server.
@@ -20,9 +20,11 @@ apis = {
 
 invoice_commodity = ["dual", "luce", "gas"]
 
-st.set_page_config(layout="wide", page_title="Check OCR solutions")
+st.set_page_config(layout="wide", page_title="Check DataLens solutions")
 
-st.write("# Check document with the selected OCR solution :mag_right:")
+st.write("# Check document with the selected DataLens solution :mag_right:")
+# logo_bytes = read_image("assets/logo.svg")
+# st.sidebar.image(logo_bytes, clamp=False, channels="RGB", output_format="auto")
 st.sidebar.write("## Configure Request :gear:")
 
 # Create two columns with streamlit function st.columns
@@ -61,12 +63,24 @@ call_api_button = st.sidebar.button("Call the API")
 
 # Call the api when the button is clicked
 if call_api_button:
+    access_token = None
+    if selected_api == "id":
+        access_token = call_authorization(
+            url=st.secrets["AUTH_URL"],
+            host=st.secrets["AUTH_HOST"],
+            client_id=st.secrets["AUTH_CLIENT_ID"],
+            client_secret=st.secrets["AUTH_CLIENT_SECRET"],
+            api_key=api_key,
+            grant_type="client_credentials"
+        )["access_token"]
+
     response = call_api(
         file_bytes=file_upload,
         file_extension=file_extension,
         url=selected_config["url"],
         api_key=api_key,
-        params=params
+        params=params,
+        access_token=access_token
     )
 
     col2.write("## Response")
