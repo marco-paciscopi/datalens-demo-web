@@ -71,7 +71,7 @@ if call_api_button:
             client_id=st.secrets["AUTH_CLIENT_ID"],
             client_secret=st.secrets["AUTH_CLIENT_SECRET"],
             grant_type="client_credentials",
-        )["access_token"]
+        )
 
     response = call_api(
         file_bytes=file_upload,
