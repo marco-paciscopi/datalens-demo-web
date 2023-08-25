@@ -70,7 +70,7 @@ if call_api_button:
             host=st.secrets["AUTH_HOST"],
             client_id=st.secrets["AUTH_CLIENT_ID"],
             client_secret=st.secrets["AUTH_CLIENT_SECRET"],
-            grant_type="client_credentials"
+            grant_type="client_credentials",
         )["access_token"]
 
     response = call_api(
@@ -79,7 +79,7 @@ if call_api_button:
         url=selected_config["url"],
         api_key=api_key,
         params=params,
-        access_token=access_token
+        access_token=access_token,
     )
 
     col2.write("## Response")

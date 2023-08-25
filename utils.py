@@ -8,6 +8,7 @@ def read_image(image_path: str) -> bytes:
 
     return image_bytes
 
+
 def pdf_to_images(file_bytes: bytes) -> list[bytes]:
     doc = fitz.open(stream=file_bytes, filetype="pdf")
 
@@ -44,20 +45,21 @@ def call_authorization(
             "Content-Type": "application/x-www-form-urlencoded",
             "Host": host,
         },
-        params={
-            "grant_type": grant_type
-        },
-        data={
-            "client_id": client_id,
-            "client_secret": client_secret
-        }
+        params={"grant_type": grant_type},
+        data={"client_id": client_id, "client_secret": client_secret},
+        verify=False,
     )
 
     return r
 
 
 def call_api(
-    file_bytes: bytes, file_extension: str, url: str, api_key: str, params: dict = str, access_token: None | str = None
+    file_bytes: bytes,
+    file_extension: str,
+    url: str,
+    api_key: str,
+    params: dict = str,
+    access_token: None | str = None,
 ) -> requests.Response:
     match file_extension:
         case "pdf":
@@ -65,7 +67,7 @@ def call_api(
         case "jpeg" | "jpg":
             content_type = "image/jpeg"
 
-    headers={
+    headers = {
         "x-api-key": api_key,
         "Content-Type": content_type,
         # "Accept": "*/*",
@@ -79,11 +81,6 @@ def call_api(
         headers["Authorization"] = f"Bearer {access_token}"
 
     # Call the api with the file and the api key
-    r = requests.post(
-        url,
-        files={"file": file_bytes},
-        headers=headers,
-        params=params
-    )
+    r = requests.post(url, files={"file": file_bytes}, headers=headers, params=params)
 
     return r
