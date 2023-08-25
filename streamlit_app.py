@@ -23,8 +23,8 @@ invoice_commodity = ["dual", "luce", "gas"]
 st.set_page_config(layout="wide", page_title="Check DataLens solutions")
 
 st.write("# Check document with the selected DataLens solution :mag_right:")
-# logo_bytes = read_image("assets/logo.svg")
-# st.sidebar.image(logo_bytes, clamp=False, channels="RGB", output_format="auto")
+logo_bytes = read_image("assets/logo.png")
+st.sidebar.image(logo_bytes, clamp=False, channels="RGB", output_format="auto")
 st.sidebar.write("## Configure Request :gear:")
 
 # Create two columns with streamlit function st.columns

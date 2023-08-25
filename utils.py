@@ -3,13 +3,10 @@ import fitz
 from PIL import Image
 
 
-# def read_image(image_path: str) -> bytes:
-#     image = Image.open(image_path)
-#     # Read the image
-#     with open(image_path, "rb") as f:
-#         image_bytes = f.read()
+def read_image(image_path: str) -> bytes:
+    image_bytes = Image.open(image_path)
 
-#     return image_bytes
+    return image_bytes
 
 def pdf_to_images(file_bytes: bytes) -> list[bytes]:
     doc = fitz.open(stream=file_bytes, filetype="pdf")
