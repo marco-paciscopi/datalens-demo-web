@@ -19,8 +19,10 @@ apis = {
 }
 
 invoice_commodity = ["dual", "luce", "gas"]
-
-st.set_page_config(layout="wide", page_title="Check DataLens solutions")
+favicon_bytes = read_image("assets/favicon.ico")
+st.set_page_config(
+    layout="wide", page_title="Check DataLens solutions", page_icon=favicon_bytes
+)
 
 st.write("# Check document with the selected DataLens solution :mag_right:")
 logo_bytes = read_image("assets/logo.png")

@@ -49,7 +49,7 @@ def call_authorization(
         data={"client_id": client_id, "client_secret": client_secret},
         verify=False,
     )
-    
+
     return r.json()["access_token"]
 
 
