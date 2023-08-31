@@ -65,15 +65,13 @@ call_api_button = st.sidebar.button("Call the API")
 
 # Call the api when the button is clicked
 if call_api_button:
-    access_token = None
-    if selected_api == "id":
-        access_token = call_authorization(
-            url=st.secrets["AUTH_URL"],
-            host=st.secrets["AUTH_HOST"],
-            client_id=st.secrets["AUTH_CLIENT_ID"],
-            client_secret=st.secrets["AUTH_CLIENT_SECRET"],
-            grant_type="client_credentials",
-        )
+    access_token = call_authorization(
+        url=st.secrets["AUTH_URL"],
+        host=st.secrets["AUTH_HOST"],
+        client_id=st.secrets["AUTH_CLIENT_ID"],
+        client_secret=st.secrets["AUTH_CLIENT_SECRET"],
+        grant_type="client_credentials",
+    )
 
     response = call_api(
         file_bytes=file_upload,

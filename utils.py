@@ -58,8 +58,8 @@ def call_api(
     file_extension: str,
     url: str,
     api_key: str,
-    params: dict = str,
-    access_token: None | str = None,
+    params: dict,
+    access_token: str,
 ) -> requests.Response:
     match file_extension:
         case "pdf":
@@ -70,15 +70,8 @@ def call_api(
     headers = {
         "x-api-key": api_key,
         "Content-Type": content_type,
-        # "Accept": "*/*",
-        # "Accept-Encoding": "gzip, deflate, br",
-        # "Connection": "keep-alive",
-        # "User-Agent": "python-requests/2.25.1",
-        # "Host": "real-time-ocr-gateway-3bcpgr34.ew.gateway.dev",
+        "Authorization": f"Bearer {access_token}"
     }
-
-    if access_token:
-        headers["Authorization"] = f"Bearer {access_token}"
 
     # Call the api with the file and the api key
     r = requests.post(url, files={"file": file_bytes}, headers=headers, params=params)
