@@ -63,7 +63,7 @@ def print_roundtrip(response, *args, **kwargs):
         {req.method} {req.url}
         {reqhdrs}
 
-        {req.body}
+        {req.body[:50]}
         ---------------- response ----------------
         {res.status_code} {res.reason} {res.url}
         {reshdrs}
