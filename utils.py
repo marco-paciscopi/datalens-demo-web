@@ -56,6 +56,7 @@ def call_authorization(
 
 def print_roundtrip(response, *args, **kwargs):
     format_headers = lambda d: "\n".join(f"{k}: {v}" for k, v in d.items())
+    small_body = lambda b: (b[:50] + "...") if len(b) > 50 else b
     print(
         textwrap.dedent(
             """
@@ -63,7 +64,7 @@ def print_roundtrip(response, *args, **kwargs):
         {req.method} {req.url}
         {reqhdrs}
 
-        {req.body[:50]}
+        {body}
         ---------------- response ----------------
         {res.status_code} {res.reason} {res.url}
         {reshdrs}
@@ -72,6 +73,7 @@ def print_roundtrip(response, *args, **kwargs):
     """
         ).format(
             req=response.request,
+            body=small_body(response.request.body),
             res=response,
             reqhdrs=format_headers(response.request.headers),
             reshdrs=format_headers(response.headers),
