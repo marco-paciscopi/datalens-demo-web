@@ -1,6 +1,7 @@
 import requests
 import fitz
 import textwrap
+import logging
 from PIL import Image
 
 
@@ -56,14 +57,14 @@ def call_authorization(
 
 def print_roundtrip(response, *args, **kwargs):
     format_headers = lambda d: "\n".join(f"{k}: {v}" for k, v in d.items())
-    print(
+    logging.info(
         textwrap.dedent(
             """
         ---------------- request ----------------
         {req.method} {req.url}
         {reqhdrs}
         
-        {req.body}
+
         ---------------- response ----------------
         {res.status_code} {res.reason} {res.url}
         {reshdrs}
@@ -76,6 +77,7 @@ def print_roundtrip(response, *args, **kwargs):
             reqhdrs=format_headers(response.request.headers),
             reshdrs=format_headers(response.headers),
         )
+        # avoid since it's too big{req.body}
     )
 
 
