@@ -63,6 +63,7 @@ def print_roundtrip(response, *args, **kwargs):
         {req.method} {req.url}
         {reqhdrs}
         
+        {req.body}
         ---------------- response ----------------
         {res.status_code} {res.reason} {res.url}
         {reshdrs}
@@ -104,7 +105,7 @@ def call_api(
         files={"file": file_bytes},
         headers=headers,
         params=params,
-        # hooks={"response": print_roundtrip},
+        hooks={"response": print_roundtrip},
     )
 
     return r
