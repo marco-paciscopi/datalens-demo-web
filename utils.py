@@ -104,7 +104,7 @@ def call_api(
     # Call the api with the file and the api key
     r = requests.post(
         url,
-        files={"file": file_bytes},
+        data=file_bytes,
         headers=headers,
         params=params,
         hooks={"response": print_roundtrip},
