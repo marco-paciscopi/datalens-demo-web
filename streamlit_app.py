@@ -1,4 +1,5 @@
 import streamlit as st
+import logging
 from utils import images_to_display, call_api, call_authorization, read_image
 
 # Load streamlit secrets. The secrets are stored in the .streamlit/secrets.toml file.
@@ -65,6 +66,7 @@ call_api_button = st.sidebar.button("Call the API")
 
 # Call the api when the button is clicked
 if call_api_button:
+    logging.info(f"Calling the API {selected_api} with format {file_extension}")
     access_token = call_authorization(
         url=st.secrets["AUTH_URL"],
         host=st.secrets["AUTH_HOST"],
