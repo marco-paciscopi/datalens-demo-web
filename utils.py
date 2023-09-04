@@ -1,5 +1,6 @@
 import requests
 import fitz
+import textwrap
 from PIL import Image
 
 
@@ -53,6 +54,31 @@ def call_authorization(
     return r.json()["access_token"]
 
 
+def print_roundtrip(response, *args, **kwargs):
+    format_headers = lambda d: "\n".join(f"{k}: {v}" for k, v in d.items())
+    print(
+        textwrap.dedent(
+            """
+        ---------------- request ----------------
+        {req.method} {req.url}
+        {reqhdrs}
+
+        {req.body}
+        ---------------- response ----------------
+        {res.status_code} {res.reason} {res.url}
+        {reshdrs}
+
+        {res.text}
+    """
+        ).format(
+            req=response.request,
+            res=response,
+            reqhdrs=format_headers(response.request.headers),
+            reshdrs=format_headers(response.headers),
+        )
+    )
+
+
 def call_api(
     file_bytes: bytes,
     file_extension: str,
@@ -70,10 +96,16 @@ def call_api(
     headers = {
         "x-api-key": api_key,
         "Content-Type": content_type,
-        "Authorization": f"Bearer {access_token}"
+        "Authorization": f"Bearer {access_token}",
     }
 
     # Call the api with the file and the api key
-    r = requests.post(url, files={"file": file_bytes}, headers=headers, params=params)
+    r = requests.post(
+        url,
+        files={"file": file_bytes},
+        headers=headers,
+        params=params,
+        hooks={"response": print_roundtrip},
+    )
 
     return r
