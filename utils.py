@@ -104,7 +104,7 @@ def call_api(
         files={"file": file_bytes},
         headers=headers,
         params=params,
-        hooks={"response": print_roundtrip},
+        # hooks={"response": print_roundtrip},
     )
 
     return r
