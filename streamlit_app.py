@@ -10,16 +10,31 @@ apis = {
     "invoices": {
         "url": st.secrets["API_URL_INVOICES"],
         "response_fields": {
-            "vendor": "Fornitore :sunrise:",
+            # "vendor": "Fornitore :sunrise:",
+            # "email": "Email :e-mail:",
+
             "name": "Name :bust_in_silhouette:",
-            "surname": "Surname :bust_in_silhouette:",
-            "email": "Email :e-mail:",
-            "meter_address": "Indirizzo :house_buildings:",
+            "surname": "Surname :busts_in_silhouette:",
+
+            "meter_address": "Indirizzo :house:",
+            "cap_meter_address": "Cap :postbox:",  
+            "city_meter_address": "Città :cityscape:",
+            "province_meter_address": "Provincia :mountain:",
+
+            "cod_fiscale": "Codice Fiscale :female-detective:",
+            "PDR": "PDR :pushpin:",
+            "POD": "POD :round_pushpin:",
+
+            "use_type": "Tipo d'uso gas:diya_lamp:",
+            "engaged_power": "Potenza Impegnata :electric_plug:",
+
+            "gas_total_annual_consumption": "Consumo annuo totale gas :fire:",
+            "power_total_annual_consumption": "Consumo annuo totale luce :bulb:",
         },
     },
 }
 
-invoice_commodity = ["dual", "luce", "gas"]
+invoice_commodity = ["gas","luce","dual"]
 favicon_bytes = read_image("assets/favicon.ico")
 st.set_page_config(
     layout="wide", page_title="Check DataLens solutions", page_icon=favicon_bytes
