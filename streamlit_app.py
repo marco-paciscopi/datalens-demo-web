@@ -54,7 +54,7 @@ params = {}
 if selected_api == "invoices":
     selected_commodity = st.sidebar.radio("Select commodity type:", invoice_commodity)
     params = {"commodity": selected_commodity}
-    st.write(selected_commodity)
+    col1.write(selected_commodity)
     if selected_commodity == 'dual':
         selected_config['response_fields'].update({
             "PDR": "PDR :pushpin:",
@@ -67,7 +67,7 @@ if selected_api == "invoices":
     elif selected_commodity == 'gas':
         selected_config['response_fields'].update({
             "PDR": "PDR :pushpin:",
-            "use_type": "Tipo d'uso gas:diya_lamp:",
+            "use_type": "Tipo d'uso gas :diya_lamp:",
             "gas_total_annual_consumption": "Consumo annuo totale gas :fire:"
             })
     elif selected_commodity == 'luce':
@@ -77,7 +77,7 @@ if selected_api == "invoices":
             "power_total_annual_consumption": "Consumo annuo totale luce :bulb:"
             })
 
-st.write(selected_config['response_fields'].keys())
+col1.write(selected_config['response_fields'].keys())
 
 # Upload the file to send with the request
 file_upload = st.sidebar.file_uploader("Choose a file:", type=["pdf", "jpeg", "jpg"])
