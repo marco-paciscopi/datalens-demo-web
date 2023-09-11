@@ -5,15 +5,33 @@ from utils import images_to_display, call_api, call_authorization, read_image
 # Load streamlit secrets. The secrets are stored in the .streamlit/secrets.toml file.
 # To add a new variable, add it in the secrets.toml file and restart the streamlit server.
 api_key = st.secrets["API_KEY"]
-
-invoice_commodity = ["gas","luce","dual"]
 apis = {
         "id": {"url": st.secrets["API_URL_ID"], "response_fields": {}},
-        "invoices": {"url": st.secrets["API_URL_INVOICES"]},
+        "invoices": {
+            "url": st.secrets["API_URL_INVOICES"],
+            "response_fields": {
+                "name": "Name :bust_in_silhouette:",
+                "surname": "Surname :busts_in_silhouette:",
+
+                "meter_address": "Indirizzo :house:",
+                "cap_meter_address": "Cap :postbox:",  
+                "city_meter_address": "Città :cityscape:",
+                "province_meter_address": "Provincia :mountain:",
+
+                "cod_fiscale": "Codice Fiscale :female-detective:",
+                # "PDR": "PDR :pushpin:",
+                # "POD": "POD :round_pushpin:",
+
+                # "use_type": "Tipo d'uso gas:diya_lamp:",
+                # "engaged_power": "Potenza Impegnata :electric_plug:",
+
+                # "gas_total_annual_consumption": "Consumo annuo totale gas :fire:",
+                # "power_total_annual_consumption": "Consumo annuo totale luce :bulb:",
+            },
         },
+    }
 
-
-
+invoice_commodity = ["gas","luce","dual"]
 favicon_bytes = read_image("assets/favicon.ico")
 st.set_page_config(
     layout="wide", page_title="Check DataLens solutions", page_icon=favicon_bytes
@@ -28,7 +46,7 @@ st.sidebar.write("## Configure Request :gear:")
 col1, col2 = st.columns(2)
 
 # Select which API to use
-selected_api = st.sidebar.radio("Select API:", apis.keys())
+selected_api = st.sidebar.radio("Select API:", ["id","invoices"])
 selected_config = apis[selected_api]
 
 # If invoices add params
@@ -36,81 +54,27 @@ params = {}
 if selected_api == "invoices":
     selected_commodity = st.sidebar.radio("Select commodity type:", invoice_commodity)
     params = {"commodity": selected_commodity}
-
-
-if selected_commodity == 'dual':
-    apis = {
-        "id": {"url": st.secrets["API_URL_ID"], "response_fields": {}},
-        "invoices": {
-            "url": st.secrets["API_URL_INVOICES"],
-            "response_fields": {
-                "name": "Name :bust_in_silhouette:",
-                "surname": "Surname :busts_in_silhouette:",
-
-                "meter_address": "Indirizzo :house:",
-                "cap_meter_address": "Cap :postbox:",  
-                "city_meter_address": "Città :cityscape:",
-                "province_meter_address": "Provincia :mountain:",
-
-                "cod_fiscale": "Codice Fiscale :female-detective:",
-                "PDR": "PDR :pushpin:",
-                "POD": "POD :round_pushpin:",
-
-                "use_type": "Tipo d'uso gas:diya_lamp:",
-                "engaged_power": "Potenza Impegnata :electric_plug:",
-
-                "gas_total_annual_consumption": "Consumo annuo totale gas :fire:",
-                "power_total_annual_consumption": "Consumo annuo totale luce :bulb:",
-            },
-        },
-    }
-elif selected_commodity == 'gas':
-    apis = {
-        "id": {"url": st.secrets["API_URL_ID"], "response_fields": {}},
-        "invoices": {
-            "url": st.secrets["API_URL_INVOICES"],
-            "response_fields": {
-                "name": "Name :bust_in_silhouette:",
-                "surname": "Surname :busts_in_silhouette:",
-
-                "meter_address": "Indirizzo :house:",
-                "cap_meter_address": "Cap :postbox:",  
-                "city_meter_address": "Città :cityscape:",
-                "province_meter_address": "Provincia :mountain:",
-
-                "cod_fiscale": "Codice Fiscale :female-detective:",
-                "PDR": "PDR :pushpin:",
-
-                "use_type": "Tipo d'uso gas:diya_lamp:",
-
-                "gas_total_annual_consumption": "Consumo annuo totale gas :fire:",
-            },
-        },
-    }
-elif selected_commodity == 'luce':
-    apis = {
-        "id": {"url": st.secrets["API_URL_ID"], "response_fields": {}},
-        "invoices": {
-            "url": st.secrets["API_URL_INVOICES"],
-            "response_fields": {
-                "name": "Name :bust_in_silhouette:",
-                "surname": "Surname :busts_in_silhouette:",
-
-                "meter_address": "Indirizzo :house:",
-                "cap_meter_address": "Cap :postbox:",  
-                "city_meter_address": "Città :cityscape:",
-                "province_meter_address": "Provincia :mountain:",
-
-                "cod_fiscale": "Codice Fiscale :female-detective:",
-                "POD": "POD :round_pushpin:",
-
-                "engaged_power": "Potenza Impegnata :electric_plug:",
-
-                "power_total_annual_consumption": "Consumo annuo totale luce :bulb:",
-            },
-        },
-    }
-
+    if selected_commodity == 'dual':
+        selected_config['response_fields'].update({
+            "PDR": "PDR :pushpin:",
+            "POD": "POD :round_pushpin:",
+            "use_type": "Tipo d'uso gas:diya_lamp:",
+            "engaged_power": "Potenza Impegnata :electric_plug:",
+            "gas_total_annual_consumption": "Consumo annuo totale gas :fire:",
+            "power_total_annual_consumption": "Consumo annuo totale luce :bulb:"
+        })
+    elif selected_commodity == 'gas':
+        selected_config['response_fields'].update({
+            "PDR": "PDR :pushpin:",
+            "use_type": "Tipo d'uso gas:diya_lamp:",
+            "gas_total_annual_consumption": "Consumo annuo totale gas :fire:"
+            })
+    elif selected_commodity == 'luce':
+        selected_config['response_fields'].update({
+            "POD": "POD :round_pushpin:",
+            "engaged_power": "Potenza Impegnata :electric_plug:",
+            "power_total_annual_consumption": "Consumo annuo totale luce :bulb:"
+            })
 
 # Upload the file to send with the request
 file_upload = st.sidebar.file_uploader("Choose a file:", type=["pdf", "jpeg", "jpg"])
