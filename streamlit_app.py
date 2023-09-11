@@ -5,36 +5,15 @@ from utils import images_to_display, call_api, call_authorization, read_image
 # Load streamlit secrets. The secrets are stored in the .streamlit/secrets.toml file.
 # To add a new variable, add it in the secrets.toml file and restart the streamlit server.
 api_key = st.secrets["API_KEY"]
-apis = {
-    "id": {"url": st.secrets["API_URL_ID"], "response_fields": {}},
-    "invoices": {
-        "url": st.secrets["API_URL_INVOICES"],
-        "response_fields": {
-            # "vendor": "Fornitore :sunrise:",
-            # "email": "Email :e-mail:",
-
-            "name": "Name :bust_in_silhouette:",
-            "surname": "Surname :busts_in_silhouette:",
-
-            "meter_address": "Indirizzo :house:",
-            "cap_meter_address": "Cap :postbox:",  
-            "city_meter_address": "Città :cityscape:",
-            "province_meter_address": "Provincia :mountain:",
-
-            "cod_fiscale": "Codice Fiscale :female-detective:",
-            "PDR": "PDR :pushpin:",
-            "POD": "POD :round_pushpin:",
-
-            "use_type": "Tipo d'uso gas:diya_lamp:",
-            "engaged_power": "Potenza Impegnata :electric_plug:",
-
-            "gas_total_annual_consumption": "Consumo annuo totale gas :fire:",
-            "power_total_annual_consumption": "Consumo annuo totale luce :bulb:",
-        },
-    },
-}
 
 invoice_commodity = ["gas","luce","dual"]
+apis = {
+        "id": {"url": st.secrets["API_URL_ID"], "response_fields": {}},
+        "invoices": {"url": st.secrets["API_URL_INVOICES"]},
+        },
+
+
+
 favicon_bytes = read_image("assets/favicon.ico")
 st.set_page_config(
     layout="wide", page_title="Check DataLens solutions", page_icon=favicon_bytes
@@ -57,6 +36,81 @@ params = {}
 if selected_api == "invoices":
     selected_commodity = st.sidebar.radio("Select commodity type:", invoice_commodity)
     params = {"commodity": selected_commodity}
+
+
+if selected_commodity == 'dual':
+    apis = {
+        "id": {"url": st.secrets["API_URL_ID"], "response_fields": {}},
+        "invoices": {
+            "url": st.secrets["API_URL_INVOICES"],
+            "response_fields": {
+                "name": "Name :bust_in_silhouette:",
+                "surname": "Surname :busts_in_silhouette:",
+
+                "meter_address": "Indirizzo :house:",
+                "cap_meter_address": "Cap :postbox:",  
+                "city_meter_address": "Città :cityscape:",
+                "province_meter_address": "Provincia :mountain:",
+
+                "cod_fiscale": "Codice Fiscale :female-detective:",
+                "PDR": "PDR :pushpin:",
+                "POD": "POD :round_pushpin:",
+
+                "use_type": "Tipo d'uso gas:diya_lamp:",
+                "engaged_power": "Potenza Impegnata :electric_plug:",
+
+                "gas_total_annual_consumption": "Consumo annuo totale gas :fire:",
+                "power_total_annual_consumption": "Consumo annuo totale luce :bulb:",
+            },
+        },
+    }
+elif selected_commodity == 'gas':
+    apis = {
+        "id": {"url": st.secrets["API_URL_ID"], "response_fields": {}},
+        "invoices": {
+            "url": st.secrets["API_URL_INVOICES"],
+            "response_fields": {
+                "name": "Name :bust_in_silhouette:",
+                "surname": "Surname :busts_in_silhouette:",
+
+                "meter_address": "Indirizzo :house:",
+                "cap_meter_address": "Cap :postbox:",  
+                "city_meter_address": "Città :cityscape:",
+                "province_meter_address": "Provincia :mountain:",
+
+                "cod_fiscale": "Codice Fiscale :female-detective:",
+                "PDR": "PDR :pushpin:",
+
+                "use_type": "Tipo d'uso gas:diya_lamp:",
+
+                "gas_total_annual_consumption": "Consumo annuo totale gas :fire:",
+            },
+        },
+    }
+elif selected_commodity == 'luce':
+    apis = {
+        "id": {"url": st.secrets["API_URL_ID"], "response_fields": {}},
+        "invoices": {
+            "url": st.secrets["API_URL_INVOICES"],
+            "response_fields": {
+                "name": "Name :bust_in_silhouette:",
+                "surname": "Surname :busts_in_silhouette:",
+
+                "meter_address": "Indirizzo :house:",
+                "cap_meter_address": "Cap :postbox:",  
+                "city_meter_address": "Città :cityscape:",
+                "province_meter_address": "Provincia :mountain:",
+
+                "cod_fiscale": "Codice Fiscale :female-detective:",
+                "POD": "POD :round_pushpin:",
+
+                "engaged_power": "Potenza Impegnata :electric_plug:",
+
+                "power_total_annual_consumption": "Consumo annuo totale luce :bulb:",
+            },
+        },
+    }
+
 
 # Upload the file to send with the request
 file_upload = st.sidebar.file_uploader("Choose a file:", type=["pdf", "jpeg", "jpg"])
