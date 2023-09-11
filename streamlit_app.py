@@ -54,28 +54,30 @@ params = {}
 if selected_api == "invoices":
     selected_commodity = st.sidebar.radio("Select commodity type:", invoice_commodity)
     params = {"commodity": selected_commodity}
+    st.write("## {selected_commodity} ")
+    col1.write("## {selected_commodity} ")
     col2.write("## {selected_commodity} ")
-    if selected_commodity == 'dual':
-        selected_config['response_fields'].update({
-            "PDR": "PDR :pushpin:",
-            "POD": "POD :round_pushpin:",
-            "use_type": "Tipo d'uso gas:diya_lamp:",
-            "engaged_power": "Potenza Impegnata :electric_plug:",
-            "gas_total_annual_consumption": "Consumo annuo totale gas :fire:",
-            "power_total_annual_consumption": "Consumo annuo totale luce :bulb:"
-        })
-    elif selected_commodity == 'gas':
-        selected_config['response_fields'].update({
-            "PDR": "PDR :pushpin:",
-            "use_type": "Tipo d'uso gas :diya_lamp:",
-            "gas_total_annual_consumption": "Consumo annuo totale gas :fire:"
-            })
-    elif selected_commodity == 'luce':
-        selected_config['response_fields'].update({
-            "POD": "POD :round_pushpin:",
-            "engaged_power": "Potenza Impegnata :electric_plug:",
-            "power_total_annual_consumption": "Consumo annuo totale luce :bulb:"
-            })
+    # if selected_commodity == 'dual':
+    #     selected_config['response_fields'].update({
+    #         "PDR": "PDR :pushpin:",
+    #         "POD": "POD :round_pushpin:",
+    #         "use_type": "Tipo d'uso gas:diya_lamp:",
+    #         "engaged_power": "Potenza Impegnata :electric_plug:",
+    #         "gas_total_annual_consumption": "Consumo annuo totale gas :fire:",
+    #         "power_total_annual_consumption": "Consumo annuo totale luce :bulb:"
+    #     })
+    # elif selected_commodity == 'gas':
+    #     selected_config['response_fields'].update({
+    #         "PDR": "PDR :pushpin:",
+    #         "use_type": "Tipo d'uso gas :diya_lamp:",
+    #         "gas_total_annual_consumption": "Consumo annuo totale gas :fire:"
+    #         })
+    # elif selected_commodity == 'luce':
+    #     selected_config['response_fields'].update({
+    #         "POD": "POD :round_pushpin:",
+    #         "engaged_power": "Potenza Impegnata :electric_plug:",
+    #         "power_total_annual_consumption": "Consumo annuo totale luce :bulb:"
+    #         })
 
 # col1.write(selected_config['response_fields'].keys())
 
@@ -100,6 +102,10 @@ if file_upload is not None:
 # Add a button to call the api
 call_api_button = st.sidebar.button("Call the API")
 
+st.write("## 2 {selected_commodity} ")
+col1.write("## 2 {selected_commodity} ")
+col2.write("## 2 {selected_commodity} ")
+
 # Call the api when the button is clicked
 if call_api_button:
     logging.info(f"Calling the API {selected_api} with format {file_extension}")
@@ -121,6 +127,10 @@ if call_api_button:
     )
 
     col2.write("## Response")
+    st.write("## 3 {selected_commodity} ")
+    col1.write("## 3 {selected_commodity} ")
+    col2.write("## 3 {selected_commodity} ")
+
     try:
         data = response.json()
 
