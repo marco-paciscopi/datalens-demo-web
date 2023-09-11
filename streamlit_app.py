@@ -54,7 +54,7 @@ params = {}
 if selected_api == "invoices":
     selected_commodity = st.sidebar.radio("Select commodity type:", invoice_commodity)
     params = {"commodity": selected_commodity}
-    col2.write(selected_commodity)
+    col2.write("## {selected_commodity} ")
     if selected_commodity == 'dual':
         selected_config['response_fields'].update({
             "PDR": "PDR :pushpin:",
