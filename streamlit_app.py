@@ -29,7 +29,7 @@ st.set_page_config(
     layout="wide", page_title="Check DataLens solutions", page_icon=favicon_bytes
 )
 
-st.write("# Check 6 document with the selected DataLens solution :mag_right:")
+st.write("# Check document with the selected DataLens solution :mag_right:")
 # logo_bytes = read_image("assets/logo.png")
 # st.sidebar.image(logo_bytes, clamp=False, channels="RGB", output_format="auto")
 st.sidebar.write("## Configure Request :gear:")
