@@ -31,7 +31,7 @@ def images_to_display(file_extension: str, file_bytes: bytes) -> list[bytes]:
     match file_extension:
         case "pdf":
             images_to_display = pdf_to_images(file_bytes)
-        case "jpeg" | "jpg":
+        case "jpeg" | "jpg" | "png":
             images_to_display.append(file_bytes)
 
     return images_to_display
@@ -94,6 +94,8 @@ def call_api(
             content_type = "application/pdf"
         case "jpeg" | "jpg":
             content_type = "image/jpeg"
+        case "png":
+            content_type = "image/png"
 
     headers = {
         "x-api-key": api_key,
