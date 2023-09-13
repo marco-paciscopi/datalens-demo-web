@@ -125,11 +125,7 @@ if call_api_button:
             col2.write(data['output_data'][f_name])
 
         # Print raw json response
-        # col2.write(f"### Raw response content (status {response.status_code}):")
-        col2.write(f"### Raw response content (status {data['commodity']}):")
-        col2.write(f"### Raw response content (status {data['output_data']}):")
-        col2.write(f"### Raw response content (status {data['other_data']}):")
-        col2.write(f"### Raw response content (status {data['raw_data']}):")
+        col2.write(f"### Raw response content (status {response.status_code}):")
         col2.write(f"Response time: {response.elapsed.total_seconds()}s")
         col2.json(data, expanded=True)
     except Exception:
