@@ -74,7 +74,7 @@ if selected_api == "invoices":
 
 # Upload the file to send with the request
 file_upload = st.sidebar.file_uploader(
-    "Choose a file:", type=["pdf", "jpeg", "jpg", "png"]
+    "Choose a file:"#, type=["pdf", "jpeg", "jpg", "png"]
 )
 
 if file_upload is not None:
