@@ -38,14 +38,13 @@ def images_to_display(file_extension: str, file_bytes: bytes) -> list[bytes]:
 
 
 def call_authorization(
-    url: str, host: str, client_id: str, client_secret: str, grant_type: str
+    url: str, client_id: str, client_secret: str, grant_type: str
 ) -> str:
     # Call the api with the file and the api key
     r = requests.post(
         url,
         headers={
-            "Content-Type": "application/x-www-form-urlencoded",
-            "Host": host,
+            "Content-Type": "application/x-www-form-urlencoded"
         },
         params={"grant_type": grant_type},
         data={"client_id": client_id, "client_secret": client_secret},

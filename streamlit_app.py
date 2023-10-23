@@ -100,7 +100,6 @@ if call_api_button:
     logging.info(f"Calling the API {selected_api} with format {file_extension}")
     access_token = call_authorization(
         url=st.secrets["AUTH_URL"],
-        host=st.secrets["AUTH_HOST"],
         client_id=st.secrets["AUTH_CLIENT_ID"],
         client_secret=st.secrets["AUTH_CLIENT_SECRET"],
         grant_type="client_credentials",
