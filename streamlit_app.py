@@ -1,6 +1,9 @@
-import streamlit as st
 import logging
-from utils import images_to_display, call_api, call_authorization, read_image
+
+import streamlit as st
+
+from sanitize import sanitize_dict
+from utils import call_api, call_authorization, images_to_display, read_image
 
 # Load streamlit secrets. The secrets are stored in the .streamlit/secrets.toml file.
 # To add a new variable, add it in the secrets.toml file and restart the streamlit server.
@@ -116,12 +119,12 @@ if call_api_button:
 
     col2.write("## Response")
     try:
-        data = response.json()
+        data = sanitize_dict(response.json())
 
         # Pretty print response
         for f_name, f_desc in selected_config["response_fields"].items():
             col2.write(f"#### {f_desc}")
-            col2.write(data['output_data'][f_name])
+            col2.write(data["output_data"][f_name])
 
         # Print raw json response
         col2.write(f"### Raw response content (status {response.status_code}):")
@@ -131,4 +134,4 @@ if call_api_button:
         # Print raw json response
         col2.write(f"### Raw response content (status {response.status_code}):")
         col2.write(f"Response time: {response.elapsed.total_seconds()}s")
-        col2.write(response.text)
+        col2.write(sanitize_dict(response.text))

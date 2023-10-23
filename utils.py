@@ -1,7 +1,8 @@
-import requests
-import fitz
-import textwrap
 import logging
+import textwrap
+
+import fitz
+import requests
 from PIL import Image
 
 
@@ -43,9 +44,7 @@ def call_authorization(
     # Call the api with the file and the api key
     r = requests.post(
         url,
-        headers={
-            "Content-Type": "application/x-www-form-urlencoded"
-        },
+        headers={"Content-Type": "application/x-www-form-urlencoded"},
         params={"grant_type": grant_type},
         data={"client_id": client_id, "client_secret": client_secret},
         verify=False,
