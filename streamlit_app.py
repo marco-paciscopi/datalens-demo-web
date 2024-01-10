@@ -15,7 +15,8 @@ apis = {
         "response_fields": {
             "name": "Name :bust_in_silhouette:",
             "surname": "Surname :busts_in_silhouette:",
-            "meter_address": "Indirizzo :house:",
+            "odonym_meter_address": "Indirizzo (odonimo) :house:",
+            "number_meter_address": "Indirizzo (numero civico) :house:",
             "cap_meter_address": "Cap :postbox:",
             "city_meter_address": "Città :cityscape:",
             "province_meter_address": "Provincia :mountain:",
