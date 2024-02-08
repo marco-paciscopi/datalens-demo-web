@@ -15,7 +15,7 @@ apis = {
             "campi_documento.nome": "Name :bust_in_silhouette:",
             "campi_documento.cognome": "Surname :busts_in_silhouette:",
             "campi_documento.id_documento": "ID :information_source:",
-            "campi_documento.data_scadenza": "Date of birth :calendar:",
+            "campi_documento.data_scadenza": "Expiration date :calendar:",
             "tipo_documento": "Type of document :bookmark_tabs:",
             "dati_validi": "Document validity :white_check_mark:",
         },
