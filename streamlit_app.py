@@ -23,14 +23,14 @@ apis = {
     "invoices": {
         "url": st.secrets["API_URL_INVOICES"],
         "response_fields": {
-            "name": "Name :bust_in_silhouette:",
-            "surname": "Surname :busts_in_silhouette:",
-            "odonym_meter_address": "Indirizzo (odonimo) :house:",
-            "number_meter_address": "Indirizzo (numero civico) :house:",
-            "cap_meter_address": "Cap :postbox:",
-            "city_meter_address": "Città :cityscape:",
-            "province_meter_address": "Provincia :mountain:",
-            "cod_fiscale": "Codice Fiscale :female-detective:",
+            "output_data.name": "Name :bust_in_silhouette:",
+            "output_data.surname": "Surname :busts_in_silhouette:",
+            "output_data.odonym_meter_address": "Indirizzo (odonimo) :house:",
+            "output_data.number_meter_address": "Indirizzo (numero civico) :house:",
+            "output_data.cap_meter_address": "Cap :postbox:",
+            "output_data.city_meter_address": "Città :cityscape:",
+            "output_data.province_meter_address": "Provincia :mountain:",
+            "output_data.cod_fiscale": "Codice Fiscale :female-detective:",
         },
     },
 }
@@ -133,7 +133,7 @@ if call_api_button:
         data = sanitize_dict(response.json())
 
         # Pretty print response
-        output_data = benedict(data["output_data"], keypath_separator=".")
+        output_data = benedict(data, keypath_separator=".")
         for f_name, f_desc in selected_config["response_fields"].items():
             col2.write(f"#### {f_desc}")
             col2.write(output_data[f_name])
