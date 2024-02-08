@@ -133,12 +133,10 @@ if call_api_button:
         data = sanitize_dict(response.json())
 
         # Pretty print response
-        current_conf = benedict(
-            selected_config["response_fields"], keypath_separator="."
-        )
-        for f_name, f_desc in current_conf.items():
+        output_data = benedict(data["output_data"], keypath_separator=".")
+        for f_name, f_desc in selected_config["response_fields"].items():
             col2.write(f"#### {f_desc}")
-            col2.write(data["output_data"][f_name])
+            col2.write(output_data[f_name])
 
         # Print raw json response
         col2.write(f"### Raw response content (status {response.status_code}):")
