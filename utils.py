@@ -54,7 +54,7 @@ def call_authorization(
 
 
 def print_roundtrip(response, *args, **kwargs):
-    format_headers = lambda d: "\n".join(f"{k}: {v}" for k, v in d.items())
+    format_headers = lambda d: "\n".join(f"{k}: {v}" for k, v in d.items())  # noqa: E731
     logging.info(
         textwrap.dedent(
             """

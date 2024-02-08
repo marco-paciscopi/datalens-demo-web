@@ -1,6 +1,6 @@
 import logging
-
 import streamlit as st
+from benedict import benedict
 
 from sanitize import sanitize_dict
 from utils import call_api, call_authorization, images_to_display, read_image
@@ -9,7 +9,17 @@ from utils import call_api, call_authorization, images_to_display, read_image
 # To add a new variable, add it in the secrets.toml file and restart the streamlit server.
 api_key = st.secrets["API_KEY"]
 apis = {
-    "id": {"url": st.secrets["API_URL_ID"], "response_fields": {}},
+    "id": {
+        "url": st.secrets["API_URL_ID"],
+        "response_fields": {
+            "campi_documento.nome": "Name :bust_in_silhouette:",
+            "campi_documento.cognome": "Surname :busts_in_silhouette:",
+            "campi_documento.id_documento": "ID :information_source:",
+            "campi_documento.data_scadenza": "Date of birth :calendar:",
+            "tipo_documento": "Type of document :bookmark_tabs:",
+            "dati_validi": "Document validity :white_check_mark:",
+        },
+    },
     "invoices": {
         "url": st.secrets["API_URL_INVOICES"],
         "response_fields": {
@@ -123,7 +133,10 @@ if call_api_button:
         data = sanitize_dict(response.json())
 
         # Pretty print response
-        for f_name, f_desc in selected_config["response_fields"].items():
+        current_conf = benedict(
+            selected_config["response_fields"], keypath_separator="."
+        )
+        for f_name, f_desc in current_conf.items():
             col2.write(f"#### {f_desc}")
             col2.write(data["output_data"][f_name])
 

@@ -1,3 +1,4 @@
-streamlit==1.29.0
-PyMuPDF==1.23.8
+streamlit==1.31.0
+PyMuPDF==1.23.21
 Pillow==10.2.0
+python-benedict==0.33.1 
