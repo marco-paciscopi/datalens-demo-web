@@ -25,12 +25,12 @@ apis = {
         "response_fields": {
             "output_data.name": "Name :bust_in_silhouette:",
             "output_data.surname": "Surname :busts_in_silhouette:",
-            "output_data.odonym_meter_address": "Indirizzo (odonimo) :house:",
-            "output_data.number_meter_address": "Indirizzo (numero civico) :house:",
-            "output_data.cap_meter_address": "Cap :postbox:",
-            "output_data.city_meter_address": "Città :cityscape:",
-            "output_data.province_meter_address": "Provincia :mountain:",
-            "output_data.cod_fiscale": "Codice Fiscale :female-detective:",
+            "output_data.odonym_meter_address": "Address (odonym) :house:",
+            "output_data.number_meter_address": "Address (street number) :house:",
+            "output_data.cap_meter_address": "Postal Code :postbox:",
+            "output_data.city_meter_address": "City :cityscape:",
+            "output_data.province_meter_address": "Province :mountain:",
+            "output_data.cod_fiscale": "Tax Code :female-detective:",
         },
     },
 }
