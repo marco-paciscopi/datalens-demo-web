@@ -61,28 +61,28 @@ if selected_api == "invoices":
     if selected_commodity == "dual":
         selected_config["response_fields"].update(
             {
-                "PDR": "PDR :pushpin:",
-                "POD": "POD :round_pushpin:",
-                "use_type": "Tipo d'uso gas:diya_lamp:",
-                "engaged_power": "Potenza Impegnata :electric_plug:",
-                "gas_total_annual_consumption": "Consumo annuo totale gas :fire:",
-                "power_total_annual_consumption": "Consumo annuo totale luce :bulb:",
+                "output_data.PDR": "PDR :pushpin:",
+                "output_data.POD": "POD :round_pushpin:",
+                "output_data.use_type": "Tipo d'uso gas:diya_lamp:",
+                "output_data.engaged_power": "Potenza Impegnata :electric_plug:",
+                "output_data.gas_total_annual_consumption": "Consumo annuo totale gas :fire:",
+                "output_data.power_total_annual_consumption": "Consumo annuo totale luce :bulb:",
             }
         )
     elif selected_commodity == "gas":
         selected_config["response_fields"].update(
             {
-                "PDR": "PDR :pushpin:",
-                "use_type": "Tipo d'uso gas :diya_lamp:",
-                "gas_total_annual_consumption": "Consumo annuo totale gas :fire:",
+                "output_data.PDR": "PDR :pushpin:",
+                "output_data.use_type": "Tipo d'uso gas :diya_lamp:",
+                "output_data.gas_total_annual_consumption": "Consumo annuo totale gas :fire:",
             }
         )
     elif selected_commodity == "luce":
         selected_config["response_fields"].update(
             {
-                "POD": "POD :round_pushpin:",
-                "engaged_power": "Potenza Impegnata :electric_plug:",
-                "power_total_annual_consumption": "Consumo annuo totale luce :bulb:",
+                "output_data.POD": "POD :round_pushpin:",
+                "output_data.engaged_power": "Potenza Impegnata :electric_plug:",
+                "output_data.power_total_annual_consumption": "Consumo annuo totale luce :bulb:",
             }
         )
 
