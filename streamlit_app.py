@@ -62,11 +62,11 @@ if selected_api == "invoices":
         selected_config["response_fields"].update(
             {
                 "output_data.PDR": "PDR :pushpin:",
+                "output_data.use_type": "Gas usage type :diya_lamp:",
+                "output_data.gas_total_annual_consumption": "Total annual gas consumption :fire:",
                 "output_data.POD": "POD :round_pushpin:",
-                "output_data.use_type": "Tipo d'uso gas:diya_lamp:",
-                "output_data.engaged_power": "Potenza Impegnata :electric_plug:",
-                "output_data.gas_total_annual_consumption": "Consumo annuo totale gas :fire:",
-                "output_data.power_total_annual_consumption": "Consumo annuo totale luce :bulb:",
+                "output_data.engaged_power": "Engaged power :electric_plug:",
+                "output_data.power_total_annual_consumption": "Total annual power consumption :bulb:",
             }
         )
     elif selected_commodity == "gas":
