@@ -30,7 +30,7 @@ apis = {
             "output_data.cap_meter_address": "Postal Code :postbox:",
             "output_data.city_meter_address": "City :cityscape:",
             "output_data.province_meter_address": "Province :mountain:",
-            "output_data.cod_fiscale": "Tax Code :female-detective:",
+            "output_data.cod_fiscale": "Fiscal Code :female-detective:",
         },
     },
 }
