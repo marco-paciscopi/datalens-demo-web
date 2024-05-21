@@ -85,6 +85,7 @@ def call_api(
     url: str,
     api_key: str,
     params: dict,
+    headers: dict,
     access_token: str,
 ) -> requests.Response:
     match file_extension:
@@ -99,6 +100,7 @@ def call_api(
         "x-api-key": api_key,
         "Content-Type": content_type,
         "Authorization": f"Bearer {access_token}",
+        **headers
     }
 
     # Call the api with the file and the api key

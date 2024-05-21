@@ -56,10 +56,12 @@ selected_config = apis[selected_api]
 
 # If invoices add params
 params = {}
+headers = {}
 if selected_api == "invoices":
     selected_commodity = st.sidebar.radio("Select commodity type:", invoice_commodity)
     selected_language = st.sidebar.radio("Select invoice language:", invoice_language)
-    params = {"commodity": selected_commodity, "language": selected_language}
+    params = {"commodity": selected_commodity}
+    headers = {"language": selected_language}
     if selected_commodity == "dual":
         selected_config["response_fields"].update(
             {
@@ -127,6 +129,7 @@ if call_api_button:
         url=selected_config["url"],
         api_key=api_key,
         params=params,
+        headers=headers,
         access_token=access_token,
     )
 
