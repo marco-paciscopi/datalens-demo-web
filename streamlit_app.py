@@ -36,6 +36,7 @@ apis = {
 }
 
 invoice_commodity = ["gas", "luce", "dual"]
+invoice_language = ["it"]
 favicon_bytes = read_image("assets/favicon.ico")
 st.set_page_config(
     layout="wide", page_title="DataLens Demo Web", page_icon=favicon_bytes
@@ -57,7 +58,8 @@ selected_config = apis[selected_api]
 params = {}
 if selected_api == "invoices":
     selected_commodity = st.sidebar.radio("Select commodity type:", invoice_commodity)
-    params = {"commodity": selected_commodity}
+    selected_language = st.sidebar.radio("Select invoice language:", invoice_language)
+    params = {"commodity": selected_commodity, "language": selected_language}
     if selected_commodity == "dual":
         selected_config["response_fields"].update(
             {
