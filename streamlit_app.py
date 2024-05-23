@@ -36,7 +36,7 @@ apis = {
 }
 
 invoice_commodity = ["gas", "luce", "dual"]
-invoice_language = ["it"]
+invoice_language = ["it", "es"]
 favicon_bytes = read_image("assets/favicon.ico")
 st.set_page_config(
     layout="wide", page_title="DataLens Demo Web", page_icon=favicon_bytes
