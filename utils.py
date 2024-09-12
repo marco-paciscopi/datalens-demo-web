@@ -30,7 +30,7 @@ def pdf_to_images(file_bytes: bytes) -> list[bytes]:
 def images_to_display(content_type: str, file_bytes: bytes) -> list[bytes]:
     # display image
     images_to_display = []
-    match file_extension:
+    match content_type:
         case "application/pdf":
             images_to_display = pdf_to_images(file_bytes)
         case "image/jpeg" | "image/png":
