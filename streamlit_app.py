@@ -176,6 +176,8 @@ if call_api_button:
                 file_list=file_upload,
                 url=selected_config["url"],
                 api_key=api_key,
+                params=params,
+                headers=headers,
                 access_token=access_token,
             )
 
