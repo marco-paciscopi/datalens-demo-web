@@ -27,7 +27,7 @@ def pdf_to_images(file_bytes: bytes) -> list[bytes]:
     return image_list
 
 
-def images_to_display(file_extension: str, file_bytes: bytes) -> list[bytes]:
+def images_to_display(content_type: str, file_bytes: bytes) -> list[bytes]:
     # display image
     images_to_display = []
     match file_extension:
