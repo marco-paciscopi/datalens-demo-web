@@ -118,7 +118,6 @@ def call_doc_api(
 ) -> requests.Response:
     headers = {
         "x-api-key": api_key,
-        "Content-Type": "multipart/form-data",
         "Authorization": f"Bearer {access_token}",
         **headers,
     }
