@@ -1,9 +1,37 @@
 import logging
+
 import streamlit as st
 from benedict import benedict
+from streamlit import UploadedFile
 
 from sanitize import sanitize_dict
-from utils import call_api, call_authorization, images_to_display, read_image
+from utils import (
+    call_authorization,
+    call_bill_api,
+    images_to_display,
+    read_image,
+)
+
+
+def process_single_upload(file_upload: UploadedFile) -> dict:
+    # Process file type
+    file_extension = file_upload.name.split(".")[-1].lower()
+    match file_extension:
+        case "pdf":
+            file_content_type = "application/pdf"
+        case "jpeg" | "jpg":
+            file_content_type = "image/jpeg"
+        case "png":
+            file_content_type = "image/png"
+
+    # Process file content
+    file_bytes = file_upload.getvalue()
+
+    # Process file name
+    file_name = file_upload.name
+
+    return {"name": file_name, "bytes": file_bytes, "content_type": file_content_type}
+
 
 # Load streamlit secrets. The secrets are stored in the .streamlit/secrets.toml file.
 # To add a new variable, add it in the secrets.toml file and restart the streamlit server.
@@ -19,6 +47,7 @@ apis = {
             "tipo_documento": "Type of document :bookmark_tabs:",
             "dati_validi": "Document validity :white_check_mark:",
         },
+        "accept_multiple_files": True,
     },
     "invoices": {
         "url": st.secrets["API_URL_INVOICES"],
@@ -32,6 +61,7 @@ apis = {
             "output_data.province_meter_address": "Province :mountain:",
             "output_data.cod_fiscale": "Fiscal Code :female-detective:",
         },
+        "accept_multiple_files": False,
     },
 }
 
@@ -92,22 +122,27 @@ if selected_api == "invoices":
 
 # Upload the file to send with the request
 file_upload = st.sidebar.file_uploader(
-    "Choose a file:", type=["pdf", "jpeg", "jpg", "png"]
+    "Choose a file:",
+    type=["pdf", "jpeg", "jpg", "png"],
+    accept_multiple_files=selected_config["accept_multiple_files"],
 )
-
 if file_upload is not None:
-    # Check file type
-    file_extension = file_upload.name.split(".")[-1].lower()
-    file_bytes = file_upload.getvalue()
+    # Process uploads
+    if not isinstance(file_upload, list):
+        file_upload = [file_upload]
+    file_upload = [process_single_upload(file_upload=fu) for fu in file_upload]
 
-    col1.write("## Uploaded document")
-    col1.write(f"Document type: {file_extension}")
+    # Display the uploaded files
+    col1.write("## Uploaded documents")
 
-    # Display images
-    for image_bytes in images_to_display(
-        file_extension=file_extension, file_bytes=file_bytes
-    ):
-        col1.image(image_bytes, clamp=False, channels="RGB", output_format="auto")
+    for file in file_upload:
+        col1.write(f"Document {file['name']} ({file['content_type']})")
+
+        # Display images
+        for image_bytes in images_to_display(
+            content_type=file["content_type"], file_bytes=file["bytes"]
+        ):
+            col1.image(image_bytes, clamp=False, channels="RGB", output_format="auto")
 
 
 # Add a button to call the api
@@ -115,7 +150,8 @@ call_api_button = st.sidebar.button("Call the API")
 
 # Call the api when the button is clicked
 if call_api_button:
-    logging.info(f"Calling the API {selected_api} with format {file_extension}")
+    logging.info(f"Calling the API {selected_api}")
+
     access_token = call_authorization(
         url=st.secrets["AUTH_URL"],
         client_id=st.secrets["AUTH_CLIENT_ID"],
@@ -123,15 +159,24 @@ if call_api_button:
         grant_type="client_credentials",
     )
 
-    response = call_api(
-        file_bytes=file_upload,
-        file_extension=file_extension,
-        url=selected_config["url"],
-        api_key=api_key,
-        params=params,
-        headers=headers,
-        access_token=access_token,
-    )
+    match selected_api:
+        case "invoices":
+            response = call_bill_api(
+                file_bytes=file_upload[0]["bytes"],
+                file_content_type=file_upload[0]["content_type"],
+                url=selected_config["url"],
+                api_key=api_key,
+                params=params,
+                headers=headers,
+                access_token=access_token,
+            )
+        case "id":
+            response = call_bill_api(
+                file_list=file_upload,
+                url=selected_config["url"],
+                api_key=api_key,
+                access_token=access_token,
+            )
 
     col2.write("## Response")
     try:
