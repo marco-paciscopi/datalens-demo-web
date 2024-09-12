@@ -136,7 +136,7 @@ if file_upload is not None:
     col1.write("## Uploaded documents")
 
     for file in file_upload:
-        col1.write(f"Document {file['name']} ({file['content_type']})")
+        col1.write(f"Document \"{file['name']}\" ({file['content_type']})")
 
         # Display images
         for image_bytes in images_to_display(
