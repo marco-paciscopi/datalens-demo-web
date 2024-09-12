@@ -2,7 +2,7 @@ import logging
 
 import streamlit as st
 from benedict import benedict
-from streamlit import UploadedFile
+from streamlit.runtime.uploaded_file_manager import UploadedFile
 
 from sanitize import sanitize_dict
 from utils import (
