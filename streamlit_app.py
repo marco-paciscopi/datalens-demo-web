@@ -8,6 +8,7 @@ from sanitize import sanitize_dict
 from utils import (
     call_authorization,
     call_bill_api,
+    call_doc_api,
     images_to_display,
     read_image,
 )
@@ -171,7 +172,7 @@ if call_api_button:
                 access_token=access_token,
             )
         case "id":
-            response = call_bill_api(
+            response = call_doc_api(
                 file_list=file_upload,
                 url=selected_config["url"],
                 api_key=api_key,
