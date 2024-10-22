@@ -6,9 +6,9 @@ metadata:
   annotations:
     github.com/project-slug: BIPxTech-Plenitude/datalens-demo-web
   tags:
-    - Python
-    - Plenitude
-    - Streamlit
+    - python
+    - plenitude
+    - streamlit
 
 spec:
   type: service
