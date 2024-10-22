@@ -1,0 +1,20 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: datalens-demo-web
+  description: This is a web service that provides a REST API for validating ID documents leveraging DocumentAI.
+  annotations:
+    github.com/project-slug: BIPxTech-Plenitude/datalens-demo-web
+  tags:
+    - Python
+    - Plenitude
+    - Streamlit
+
+spec:
+  type: service
+  lifecycle: production
+  owner: datalens_maintainers
+  system: datalens
+  dependsOn:
+    - component:default/datalens-id-model-web
+    - component:default/datalens-bollette-model
