@@ -187,9 +187,16 @@ if call_api_button:
 
         # Pretty print response
         output_data = benedict(data, keypath_separator=".")
-        for f_name, f_desc in selected_config["response_fields"].items():
-            col2.write(f"#### {f_desc}")
-            col2.write(output_data[f_name])
+
+        if selected_api == 'id':
+            for f_name, f_desc in selected_config["response_fields"].items():
+                col2.write(f"#### {f_desc}")
+                col2.write(output_data[f_name])
+        else:
+            for f_name, f_desc in selected_config["response_fields"].items():
+                col2.write(f"#### {f_desc}")
+                col2.write(output_data['extracted_fields'][f_name.split('.')[1]])
+
 
         # Print raw json response
         col2.write(f"### Raw response content (status {response.status_code}):")

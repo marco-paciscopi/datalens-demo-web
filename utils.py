@@ -91,17 +91,19 @@ def call_bill_api(
 ) -> requests.Response:
     headers = {
         "x-api-key": api_key,
-        "Content-Type": file_content_type,
         "Authorization": f"Bearer {access_token}",
         **headers,
     }
 
-    # Call the api with the file and the api key
+    files = [
+        ("files", ("bolletta.pdf", file_bytes, file_content_type))
+    ]
+
     r = requests.post(
         url,
-        data=file_bytes,
         headers=headers,
         params=params,
+        files=files,
         hooks={"response": print_roundtrip},
     )
 
