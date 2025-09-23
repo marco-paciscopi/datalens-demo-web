@@ -14,16 +14,100 @@ from utils import (
 )
 
 
+# === RESIDENTIAL CUSTOMERS SCHEMA ===
+RESI_COMMON_FIELDS_SCHEMA = {
+    "name": "Name :bust_in_silhouette:",
+    "surname": "Surname :busts_in_silhouette:",
+    "odonym_meter_address": "Address (odonym) :house:",
+    "number_meter_address": "Address (street number) :house:",
+    "cap_meter_address": "Postal Code :postbox:",
+    "city_meter_address": "City :cityscape:",
+    "province_meter_address": "Province :mountain:",
+    "fiscal_code": "Fiscal Code :female-detective:",
+    "commodity": "Commodity Type :electric_plug:",
+    "start_of_delivery": "Start of Delivery :rocket:",
+}
+
+RESI_GAS_FIELDS_SCHEMA = {
+    "pdr": "PDR :pushpin:",
+    "use_type": "Gas usage type :diya_lamp:",
+    "gas_total_annual_consumption": "Total annual gas consumption :fire:",
+}
+
+RESI_POWER_FIELDS_SCHEMA = {
+    "pod": "POD :round_pushpin:",
+    "engaged_power": "Engaged power :electric_plug:",
+    "power_total_annual_consumption": "Total annual power consumption :bulb:",
+    "power_F1_annual_consumption": "Power F1 annual consumption :sunny:",
+    "power_F2_annual_consumption": "Power F2 annual consumption :partly_sunny:",
+    "power_F3_annual_consumption": "Power F3 annual consumption :new_moon:",
+}
+
+# === MICROBUSINESS CUSTOMERS SCHEMA ===
+MB_COMMON_FIELDS_SCHEMA = {
+    "company_name": "Company Name :office:",
+    "odonym_meter_address": "Meter Address (odonym) :house:",
+    "number_meter_address": "Meter Address (street number) :house:",
+    "cap_meter_address": "Meter Postal Code :postbox:",
+    "city_meter_address": "Meter City :cityscape:",
+    "province_meter_address": "Meter Province :mountain:",
+    "odonym_legal_address": "Legal Address (odonym) :bank:",
+    "number_legal_address": "Legal Address (street number) :bank:",
+    "cap_legal_address": "Legal Postal Code :mailbox:",
+    "city_legal_address": "Legal City :cityscape:",
+    "province_legal_address": "Legal Province :mountain:",
+    "fiscal_code": "Fiscal Code/VATTT :female-detective:",
+    #"vat_number": "VAT Number :receipt:",
+    "commodity": "Commodity Type :electric_plug:",
+}
+
+MB_GAS_FIELDS_SCHEMA = {
+    "pdr": "PDR :pushpin:",
+    "use_type": "Gas usage type :diya_lamp:",
+    "gas_total_annual_consumption": "Total annual gas consumption :fire:",
+}
+
+MB_POWER_FIELDS_SCHEMA = {
+    "pod": "POD :round_pushpin:",
+    "engaged_power": "Engaged power :electric_plug:",
+    "available_power": "Available power :zap:",
+    "supply_voltage": "Supply voltage :high_voltage:",
+    "power_total_annual_consumption": "Total annual power consumption :bulb:",
+    "power_F1_annual_consumption": "Power F1 annual consumption :sunny:",
+    "power_F2_annual_consumption": "Power F2 annual consumption :partly_sunny:",
+    "power_F3_annual_consumption": "Power F3 annual consumption :new_moon:",
+}
+
+
+# Get the correct field mapping based on customer type and commodity
+def get_field_mapping(customer_type, commodity):
+    field_mapping = {}
+    if customer_type.lower() == "residenziale":
+        field_mapping.update(RESI_COMMON_FIELDS_SCHEMA)
+        if commodity in ["gas", "dual"]:
+            field_mapping.update(RESI_GAS_FIELDS_SCHEMA)
+        if commodity in ["luce", "dual"]:
+            field_mapping.update(RESI_POWER_FIELDS_SCHEMA)
+    elif customer_type.lower() == "microbusiness":
+        field_mapping.update(MB_COMMON_FIELDS_SCHEMA)
+        if commodity in ["gas", "dual"]:
+            field_mapping.update(MB_GAS_FIELDS_SCHEMA)
+        if commodity in ["luce", "dual"]:
+            field_mapping.update(MB_POWER_FIELDS_SCHEMA)
+    return field_mapping
+
+
 def process_single_upload(file_upload: UploadedFile) -> dict:
     # Process file type
     file_extension = file_upload.name.split(".")[-1].lower()
-    match file_extension:
-        case "pdf":
-            file_content_type = "application/pdf"
-        case "jpeg" | "jpg":
-            file_content_type = "image/jpeg"
-        case "png":
-            file_content_type = "image/png"
+    if file_extension == "pdf":
+        file_content_type = "application/pdf"
+    elif file_extension in ["jpeg", "jpg"]:
+        file_content_type = "image/jpeg"
+    elif file_extension == "png":
+        file_content_type = "image/png"
+    else:
+        file_content_type = "application/octet-stream"
 
     # Process file content
     file_bytes = file_upload.getvalue()
@@ -89,38 +173,13 @@ selected_config = apis[selected_api]
 params = {}
 headers = {}
 if selected_api == "invoices":
+    selected_customer_type = st.sidebar.radio("Select customer type:", ["residenziale", "microbusiness"])
+    print(selected_customer_type)
     selected_commodity = st.sidebar.radio("Select commodity type:", invoice_commodity)
     selected_language = st.sidebar.radio("Select invoice language:", invoice_language)
-    params = {"commodity": selected_commodity}
+    params = {"commodity": selected_commodity, "customer_type": selected_customer_type}
     headers = {"language": selected_language}
-    if selected_commodity == "dual":
-        selected_config["response_fields"].update(
-            {
-                "output_data.PDR": "PDR :pushpin:",
-                "output_data.use_type": "Gas usage type :diya_lamp:",
-                "output_data.gas_total_annual_consumption": "Total annual gas consumption :fire:",
-                "output_data.POD": "POD :round_pushpin:",
-                "output_data.engaged_power": "Engaged power :electric_plug:",
-                "output_data.power_total_annual_consumption": "Total annual power consumption :bulb:",
-            }
-        )
-    elif selected_commodity == "gas":
-        selected_config["response_fields"].update(
-            {
-                "output_data.PDR": "PDR :pushpin:",
-                "output_data.use_type": "Gas usage type :diya_lamp:",
-                "output_data.gas_total_annual_consumption": "Total annual gas consumption :fire:",
-            }
-        )
-    elif selected_commodity == "luce":
-        selected_config["response_fields"].update(
-            {
-                "output_data.POD": "POD :round_pushpin:",
-                "output_data.engaged_power": "Engaged power :electric_plug:",
-                "output_data.power_total_annual_consumption": "Total annual power consumption :bulb:",
-            }
-        )
-
+print(params)
 # Upload the file to send with the request
 file_upload = st.sidebar.file_uploader(
     "Choose a file:",
@@ -151,59 +210,74 @@ call_api_button = st.sidebar.button("Call the API")
 
 # Call the api when the button is clicked
 if call_api_button:
-    logging.info(f"Calling the API {selected_api}")
+    if not file_upload or len(file_upload) == 0:
+        st.error("Please upload at least one file before calling the API.")
+    else:
+        logging.info(f"Calling the API {selected_api}")
 
-    access_token = call_authorization(
-        url=st.secrets["AUTH_URL"],
-        client_id=st.secrets["AUTH_CLIENT_ID"],
-        client_secret=st.secrets["AUTH_CLIENT_SECRET"],
-        grant_type="client_credentials",
-    )
+        access_token = call_authorization(
+            url=st.secrets["AUTH_URL"],
+            client_id=st.secrets["AUTH_CLIENT_ID"],
+            client_secret=st.secrets["AUTH_CLIENT_SECRET"],
+            grant_type="client_credentials",
+        )
 
-    match selected_api:
-        case "invoices":
+        if selected_api == "invoices":
             response = call_bill_api(
                 file_bytes=file_upload[0]["bytes"],
                 file_content_type=file_upload[0]["content_type"],
                 url=selected_config["url"],
                 api_key=api_key,
-                params=params,
+                data=params,
                 headers=headers,
                 access_token=access_token,
             )
-        case "id":
+        elif selected_api == "id":
             response = call_doc_api(
                 file_list=file_upload,
                 url=selected_config["url"],
                 api_key=api_key,
-                params=params,
+                data=params,
                 headers=headers,
                 access_token=access_token,
             )
 
-    col2.write("## Response")
-    try:
-        data = sanitize_dict(response.json())
+        col2.write("## Response")
+        try:
+            data = sanitize_dict(response.json())
 
-        # Pretty print response
-        output_data = benedict(data, keypath_separator=".")
+            # Pretty print response
+            output_data = benedict(data, keypath_separator=".")
 
-        if selected_api == 'id':
-            for f_name, f_desc in selected_config["response_fields"].items():
-                col2.write(f"#### {f_desc}")
-                col2.write(output_data[f_name])
-        else:
-            for f_name, f_desc in selected_config["response_fields"].items():
-                col2.write(f"#### {f_desc}")
-                col2.write(output_data['extracted_fields'][f_name.split('.')[1]])
+            if selected_api == 'id':
+                for f_name, f_desc in selected_config["response_fields"].items():
+                    col2.write(f"#### {f_desc}")
+                    col2.write(output_data[f_name])
+            else:
+                # Always display the section header
+                col2.write(f"### Fields for {selected_customer_type}")
+                extracted_fields = output_data.get('extracted_fields', {})
+
+                field_mapping = get_field_mapping(selected_customer_type, selected_commodity)
+                any_field_displayed = False
+                for field_name, display_name in field_mapping.items():
+                    if field_name in extracted_fields:
+                        value = extracted_fields[field_name]
+                        if value is not None and value != "":
+                            pretty_name = display_name if display_name else field_name.replace('_', ' ').capitalize()
+                            col2.write(f"#### {pretty_name}")
+                            col2.write(value)
+                            any_field_displayed = True
+                if not any_field_displayed:
+                    col2.write("No fields to display.")
 
 
-        # Print raw json response
-        col2.write(f"### Raw response content (status {response.status_code}):")
-        col2.write(f"Response time: {response.elapsed.total_seconds()}s")
-        col2.json(data, expanded=True)
-    except Exception:
-        # Print raw json response
-        col2.write(f"### Raw response content (status {response.status_code}):")
-        col2.write(f"Response time: {response.elapsed.total_seconds()}s")
-        col2.write(sanitize_dict(response.text))
+            # Print raw json response
+            col2.write(f"### Raw response content (status {response.status_code}):")
+            col2.write(f"Response time: {response.elapsed.total_seconds()}s")
+            col2.json(data, expanded=True)
+        except Exception:
+            # Print raw json response
+            col2.write(f"### Raw response content (status {response.status_code}):")
+            col2.write(f"Response time: {response.elapsed.total_seconds()}s")
+            col2.write(sanitize_dict(response.text))

@@ -85,7 +85,7 @@ def call_bill_api(
     file_content_type: str,
     url: str,
     api_key: str,
-    params: dict,
+    data: dict,
     headers: dict,
     access_token: str,
 ) -> requests.Response:
@@ -102,7 +102,7 @@ def call_bill_api(
     r = requests.post(
         url,
         headers=headers,
-        params=params,
+        data=data,
         files=files,
         hooks={"response": print_roundtrip},
     )
@@ -114,7 +114,7 @@ def call_doc_api(
     file_list: list[Tuple[str, bytes, str]],
     url: str,
     api_key: str,
-    params: dict,
+    data: dict,
     headers: dict,
     access_token: str,
 ) -> requests.Response:
@@ -132,7 +132,7 @@ def call_doc_api(
             for file in file_list
         ],
         headers=headers,
-        params=params,
+        data=data,
         hooks={"response": print_roundtrip},
     )
 
