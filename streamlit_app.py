@@ -56,7 +56,7 @@ MB_COMMON_FIELDS_SCHEMA = {
     "cap_legal_address": "Legal Postal Code :mailbox:",
     "city_legal_address": "Legal City :cityscape:",
     "province_legal_address": "Legal Province :mountain:",
-    "fiscal_code": "Fiscal Code/VATTT :female-detective:",
+    "fiscal_code": "Fiscal Code :female-detective:",
     #"vat_number": "VAT Number :receipt:",
     "commodity": "Commodity Type :electric_plug:",
 }
@@ -166,17 +166,25 @@ st.sidebar.write("## Configure Request :gear:")
 col1, col2 = st.columns(2)
 
 # Select which API to use
-selected_api = st.sidebar.radio("Select API:", ["id", "invoices"])
+# NOTE: Original interactive selection kept but silenced per request.
+# selected_api = st.sidebar.radio("Select API:", ["id", "invoices"])
+# Force selection to "invoices" (the "id" pathway is disabled silently)
+selected_api = "invoices"
 selected_config = apis[selected_api]
 
 # If invoices add params
 params = {}
 headers = {}
 if selected_api == "invoices":
+    # Customer type is still configurable.
     selected_customer_type = st.sidebar.radio("Select customer type:", ["residenziale", "microbusiness"])
     print(selected_customer_type)
-    selected_commodity = st.sidebar.radio("Select commodity type:", invoice_commodity)
-    selected_language = st.sidebar.radio("Select invoice language:", invoice_language)
+    # The following filters (commodity & language) are silenced; original code retained below.
+    # selected_commodity = st.sidebar.radio("Select commodity type:", invoice_commodity)
+    # selected_language = st.sidebar.radio("Select invoice language:", invoice_language)
+    # Provide default silent values (first entries) so logic continues to work.
+    selected_commodity = invoice_commodity[0]
+    selected_language = invoice_language[0]
     params = {"commodity": selected_commodity, "customer_type": selected_customer_type}
     headers = {"language": selected_language}
 print(params)
