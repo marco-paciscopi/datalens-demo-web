@@ -158,17 +158,14 @@ st.set_page_config(
 )
 
 st.write("# Check document with the selected DataLens solution :mag_right:")
-# logo_bytes = read_image("assets/logo.png")
-# st.sidebar.image(logo_bytes, clamp=False, channels="RGB", output_format="auto")
+
 st.sidebar.write("## Configure Request :gear:")
 
 # Create two columns with streamlit function st.columns
 col1, col2 = st.columns(2)
 
 # Select which API to use
-# NOTE: Original interactive selection kept but silenced per request.
-# selected_api = st.sidebar.radio("Select API:", ["id", "invoices"])
-# Force selection to "invoices" (the "id" pathway is disabled silently)
+
 selected_api = "invoices"
 selected_config = apis[selected_api]
 
@@ -179,10 +176,7 @@ if selected_api == "invoices":
     # Customer type is still configurable.
     selected_customer_type = st.sidebar.radio("Select customer type:", ["residenziale", "microbusiness"])
     print(selected_customer_type)
-    # The following filters (commodity & language) are silenced; original code retained below.
-    # selected_commodity = st.sidebar.radio("Select commodity type:", invoice_commodity)
-    # selected_language = st.sidebar.radio("Select invoice language:", invoice_language)
-    # Provide default silent values (first entries) so logic continues to work.
+
     selected_commodity = invoice_commodity[0]
     selected_language = invoice_language[0]
     params = {"commodity": selected_commodity, "customer_type": selected_customer_type}
