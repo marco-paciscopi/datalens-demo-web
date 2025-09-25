@@ -157,7 +157,7 @@ st.set_page_config(
     layout="wide", page_title="DataLens Demo Web", page_icon=favicon_bytes
 )
 
-st.write("# Check document with the selected DataLens solution :mag_right:")
+st.write("# Check document with the DataLens solution :mag_right:")
 
 st.sidebar.write("## Configure Request :gear:")
 
