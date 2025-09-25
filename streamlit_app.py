@@ -56,7 +56,7 @@ MB_COMMON_FIELDS_SCHEMA = {
     "cap_legal_address": "Legal Postal Code :mailbox:",
     "city_legal_address": "Legal City :cityscape:",
     "province_legal_address": "Legal Province :mountain:",
-    "fiscal_code": "Fiscal Code/VATTT :female-detective:",
+    "fiscal_code": "Fiscal Code :female-detective:",
     #"vat_number": "VAT Number :receipt:",
     "commodity": "Commodity Type :electric_plug:",
 }
@@ -157,26 +157,28 @@ st.set_page_config(
     layout="wide", page_title="DataLens Demo Web", page_icon=favicon_bytes
 )
 
-st.write("# Check document with the selected DataLens solution :mag_right:")
-# logo_bytes = read_image("assets/logo.png")
-# st.sidebar.image(logo_bytes, clamp=False, channels="RGB", output_format="auto")
+st.write("# Check document with the DataLens solution :mag_right:")
+
 st.sidebar.write("## Configure Request :gear:")
 
 # Create two columns with streamlit function st.columns
 col1, col2 = st.columns(2)
 
 # Select which API to use
-selected_api = st.sidebar.radio("Select API:", ["id", "invoices"])
+
+selected_api = "invoices"
 selected_config = apis[selected_api]
 
 # If invoices add params
 params = {}
 headers = {}
 if selected_api == "invoices":
+    # Customer type is still configurable.
     selected_customer_type = st.sidebar.radio("Select customer type:", ["residenziale", "microbusiness"])
     print(selected_customer_type)
-    selected_commodity = st.sidebar.radio("Select commodity type:", invoice_commodity)
-    selected_language = st.sidebar.radio("Select invoice language:", invoice_language)
+
+    selected_commodity = invoice_commodity[0]
+    selected_language = invoice_language[0]
     params = {"commodity": selected_commodity, "customer_type": selected_customer_type}
     headers = {"language": selected_language}
 print(params)
